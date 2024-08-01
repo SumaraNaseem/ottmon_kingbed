@@ -41,14 +41,17 @@ const cartItemss = useSelector((state) => state.cartReducer.cartItems);
 console.log(cartItemss,'cartLength____1')
 
     const router = useRouter();
+    const handleCheckout = () => {
+        router.push('/CheckOut'); // Adjust path if necessary
+    };
 
     const handleViewCart = () => {
         router.push('/NewPaymentCardSetup'); // Adjust path if necessary
     };
 
-    const handleCheckout = () => {
-        router.push('/NewPaymentCardSetup'); // Adjust path if necessary
-    };
+    // const handleCheckout = () => {
+    //     router.push('/NewPaymentCardSetup'); // Adjust path if necessary
+    // };
 
     return (
         <div className={`fixed top-0 right-0 h-full w-[360px] bg-white text-black overflow-y-auto transition-transform ease-in-out duration-300 z-50 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
