@@ -375,7 +375,9 @@ const Navbar = () => {
 
               <div className="flex flex-col items-center gap-1 cursor-pointer">
                 <Image src={userimg} width={18} height={18} alt="Account" />
-                <span className="font-bold text-[0.6rem]">Account</span>
+                <span onClick={()=>{
+                  ssss.push('/Users/SignUp')
+                }} className="font-bold text-[0.6rem]">Account</span>
               </div>
               <div className="flex flex-col items-center gap-1 cursor-pointer">
                 <Image src={basket} onClick={()=>{
