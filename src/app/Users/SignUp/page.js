@@ -45,14 +45,14 @@ export default function SignUp() {
           redirect: "follow",
         };
 
-        fetch("http://localhost:5000/register", requestOptions)
+        fetch("https://ottomonukbackup1.vercel.app/register", requestOptions)
           .then((response) => response.text())
           .then((result) => {
             const data = JSON.parse(result);
             if (data.msg === "User already exists") {
               alert(data.msg);
             } else if (data.token) {
-              router.push("/login");
+              router.push("/Users/Login");
               alert("Account created successfully");
             } else {
               alert("Invalid!");

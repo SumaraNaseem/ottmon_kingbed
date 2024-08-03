@@ -33,16 +33,19 @@ export default function Login() {
           redirect: "follow",
         };
 
-        fetch("http://localhost:5000/auth", requestOptions)
-          .then((response) => response.text())
+        fetch("http://localhost:9001/auth", requestOptions)
+          .then((response) => response.text()
+        
+        
+        )
           .then((result) => {
             const data = JSON.parse(result);
             const { token, email } = data || {};
             if (token) {
-              if (email === "ehteshambutt58@gmail.com") {
+              if (email === "buttehtesham86@gmail.com") {
                 router.push("/admin");
               } else if (token) {
-                router.push("/proceed");
+                router.push("/NewPaymentCardSetup");
               }
               localStorage.setItem("token", token);
             } else {

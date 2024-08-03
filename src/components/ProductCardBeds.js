@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { addToCart, Removecart } from "./../app/Redux/Action/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from 'next/navigation';
-const ProductCardBeds = ({ name, price, image, hoverImage, discount, size, category, selectedGrid, index, pageType, CallingFrom }) => {
+const ProductCardBeds = ({ itemOffset,name, price, image, hoverImage, discount, size, category, selectedGrid, index, pageType, CallingFrom }) => {
   const imageRef = useRef();
   const icon1Ref = useRef();
   const icon2Ref = useRef();
@@ -13,6 +13,8 @@ const ProductCardBeds = ({ name, price, image, hoverImage, discount, size, categ
   const router = useRouter();
   const dispatch = useDispatch();
   console.log(selectedGrid, 'pageType___+')
+  console.log(itemOffset, 'pageType___=')
+
   const isMattresses = pageType === 'Mattress'
   useEffect(() => {
     if (!imageRef || !icon1Ref || !icon2Ref) return
@@ -41,16 +43,17 @@ const ProductCardBeds = ({ name, price, image, hoverImage, discount, size, categ
   console.log(CallingFrom, 'CallingFrom___')
 
   useEffect(() => {
-    setLoading(true)
     const fetchMattresses = async () => {
+      setLoading(true);
       try {
         const response = await axios.get("https://ottomonukbackup1.vercel.app/beds");
         console.log("API Response:___", response.data);
-        setLoading(false)
+        setLoading(false);
+
         const filters = {
           PocketSprung: 'Pocket Sprung',
           memoryFoam: 'Memory Foam',
-          Orthopaedic: 'Pocket Orthopaedic',
+          Orthopaedic: 'Orthopaedic',
           Latex: 'Latex',
           Miracoil: 'Miracoil',
           NaturalFillings: 'Natural Fillings',
@@ -63,21 +66,35 @@ const ProductCardBeds = ({ name, price, image, hoverImage, discount, size, categ
           SmallDoubleBeds: `Small Double Beds(4')`,
           SingleBeds: `Single Beds(3')`,
           SmallSingleBeds: `Small Single Beds(2' 6'')`,
-
         };
 
         const filteredData = response.data.bedsData.filter(
           (value) => value.type === filters[CallingFrom]
         );
-        setMattresses(filteredData);
+
+        const itemsPerPage = 10;
+        const startIdx = itemOffset;
+        const endIdx = itemOffset + itemsPerPage;
+        const paginatedData = filteredData.slice(startIdx, endIdx);
+        if(CallingFrom==='bedsss'){
+          const itemsPerPage = 10;
+          const startIdx = itemOffset;
+          const endIdx = itemOffset + itemsPerPage;
+          const paginatedData = response.data.bedsData.slice(startIdx, endIdx);
+        setMattresses(paginatedData);
+        return
+
+        }
+        setMattresses(paginatedData);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false)
+        setLoading(false);
       }
     };
 
     fetchMattresses();
-  }, [CallingFrom]);
+  }, [CallingFrom, itemOffset]);
   return (
     Loading ? (
       <div class="flex justify-center items-center h-screen">
@@ -91,7 +108,8 @@ const ProductCardBeds = ({ name, price, image, hoverImage, discount, size, categ
 
       </div>
     ) : (
-      mattresses?.map((item, index) =>
+      mattresses.length>0?
+     ( mattresses?.map((item, index) =>
         selectedGrid === 0 ? (
           <div
             key={item._id}
@@ -216,7 +234,10 @@ const ProductCardBeds = ({ name, price, image, hoverImage, discount, size, categ
         
 
         )
-      )
+      )):(<div className="flex items-center justify-center h-[1 00px] text-red-500">
+      No Record Found
+    </div>)
+    
     )
   )
 }

@@ -11,6 +11,7 @@ const ProductListMatress = ({ selectedGrid, setSelectedGrid, pageType,CallingFro
      //pagination 
     const itemsPerPage = 10
     const [itemOffset, setItemOffset] = useState(0);
+    console.log(itemOffset,'itemOffset__')
     const endOffset = itemOffset + itemsPerPage;
     const currentProducts = isMattresses ? Mattresses.slice(itemOffset, endOffset) : Products.slice(itemOffset, endOffset);
  
@@ -24,18 +25,18 @@ const ProductListMatress = ({ selectedGrid, setSelectedGrid, pageType,CallingFro
             behavior: "smooth"
         });
         setItemOffset(newOffset);
+
     };
     return (
         <div>
             <section id="Projects"
                 className={` ${selectedGrid === 2 ? "custom-grid" : "grid grid-cols-" + selectedGrid} ${selectedGrid !== 0 ? 'justify-items-center justify-center gap-6 ' : ''}mt-10 mb-5 `}>
                     {/* {currentProducts.map((product, i) => ( */}
-                        <ProductCardMatress CallingFrom={CallingFrom} pageType={pageType}  selectedGrid={selectedGrid}    />
+                        <ProductCardMatress itemOffset={itemOffset} CallingFrom={CallingFrom} pageType={pageType}  selectedGrid={selectedGrid}    />
                     {/* ))} */}
             </section>
             <hr className='text-primary' />
-            {CallingFrom===undefined?(""):(
-                <div className='flex justify-center mt-3'>
+                 <div className='flex justify-center mt-3'>
                 <ReactPaginate
                     pageLinkClassName='text-primary'
                     activeClassName='text-red-400'
@@ -50,7 +51,7 @@ const ProductListMatress = ({ selectedGrid, setSelectedGrid, pageType,CallingFro
                     pageCount={pageCount}
                     previousLabel="Previous"
                     renderOnZeroPageCount={null}
-                /></div>)} 
+                /></div> 
             
             {/* <div className='flex justify-center mt-3'>
                 <ReactPaginate

@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef, Suspense } from 'react'
 import ProductCard from './ProductCard'
 import ReactPaginate from 'react-paginate'
 
-const ProductList = ({ selectedGrid, setSelectedGrid, pageType }) => {
+const ProductList = ({ selectedGrid,CallingFrom, setSelectedGrid, pageType }) => {
     const listRef = useRef()
     const isMattresses = pageType === 'Mattress';
 

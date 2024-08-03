@@ -6,7 +6,7 @@ import { addToCart,Removecart } from "./../app/Redux/Action/actions";
 import { useDispatch, useSelector } from "react-redux";
 // import { useRouter } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-const ProductCardsale = ({ name, price, image, hoverImage, discount, size, category, selectedGrid, index, pageType ,CallingFrom}) => {
+const ProductCardsale = ({ name,itemOffset, price, image, hoverImage, discount, size, category, selectedGrid, index, pageType ,CallingFrom}) => {
     const imageRef = useRef();
     const icon1Ref = useRef();
     const icon2Ref = useRef();
@@ -67,7 +67,21 @@ const ProductCardsale = ({ name, price, image, hoverImage, discount, size, categ
           const filteredData = response.data.salesData.filter(
             (value) => value.type === filters[CallingFrom]
           );
-          setMattresses(filteredData);
+          const itemsPerPage = 10;
+          const startIdx = itemOffset;
+          const endIdx = itemOffset + itemsPerPage;
+          const paginatedData = filteredData.slice(startIdx, endIdx);
+          setMattresses(paginatedData);
+
+          if(CallingFrom==='Sales'){
+            const itemsPerPage = 10;
+            const startIdx = itemOffset;
+            const endIdx = itemOffset + itemsPerPage;
+            const paginatedData = response.data.salesData.slice(startIdx, endIdx);
+          setMattresses(paginatedData);
+          return
+  
+          }
         } catch (error) {
           console.error("Error fetching data:", error);
           setLoading(false)
@@ -75,7 +89,7 @@ const ProductCardsale = ({ name, price, image, hoverImage, discount, size, categ
       };
     
       fetchMattresses();
-    }, [CallingFrom]);
+    }, [CallingFrom,itemOffset]);
     return (
       Loading ? (
         <div class="flex justify-center items-center h-screen">
@@ -89,7 +103,8 @@ const ProductCardsale = ({ name, price, image, hoverImage, discount, size, categ
   
         </div>
       ) : (
-        mattresses?.map((item, index) =>
+        mattresses.length>0?
+        (mattresses?.map((item, index) =>
           selectedGrid === 0 ? (
             <div
               key={item._id}
@@ -209,6 +224,10 @@ const ProductCardsale = ({ name, price, image, hoverImage, discount, size, categ
           </div>
         </div>
           )
+        )):(
+          <div className="flex items-center justify-center h-[1 00px] text-red-500">
+      No Record Found
+    </div>
         )
       )
         

@@ -31,7 +31,7 @@ const ProductListSale = ({ selectedGrid, setSelectedGrid, pageType,CallingFrom }
             <section id="Projects"
                 className={` ${selectedGrid === 2 ? "custom-grid" : "grid grid-cols-" + selectedGrid} ${selectedGrid !== 0 ? 'justify-items-center justify-center gap-6 ' : ''}mt-10 mb-5 `}>
                     {/* {currentProducts.map((product, i) => ( */}
-                        <ProductCardsale CallingFrom={CallingFrom} pageType={pageType}  selectedGrid={selectedGrid}    />
+                        <ProductCardsale itemOffset={itemOffset} CallingFrom={CallingFrom} pageType={pageType}  selectedGrid={selectedGrid}    />
                     {/* ))} */}
             </section>
             <hr className='text-primary' />

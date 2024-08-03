@@ -4,6 +4,7 @@ import ProductFilter from "../../components/ProductFilter";
 import ProductGridSelector from "../../components/ProductGridSelector";
 import ProductList from "../..//components/ProductList";
 import { useEffect, useState } from "react";
+import ProductListBeds from "../../components/ProductListBeds";
 const sortOptions = [
     "Featured",
     "Best selling",
@@ -74,7 +75,7 @@ const ProductListingPage = () => {
                         </ul>
                     </div>
                     <div className="list">
-                        <ProductList selectedGrid={selectedGrid} setSelectedGrid={setSelectedGrid} />
+                        <ProductListBeds CallingFrom={'bedsss'} selectedGrid={selectedGrid} setSelectedGrid={setSelectedGrid} />
                     </div>
                     <div className="paginatiion">
                     </div>

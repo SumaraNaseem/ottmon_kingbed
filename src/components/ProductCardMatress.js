@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { addToCart, Removecart } from "./../app/Redux/Action/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from 'next/navigation';
-const ProductCardMatress = ({ item, selectedGrid, pageType, CallingFrom }) => {
+const ProductCardMatress = ({ item, selectedGrid,itemOffset, pageType, CallingFrom }) => {
   // const ssss = useRouter()
   const imageRef = useRef();
   const icon1Ref = useRef();
@@ -25,7 +25,8 @@ const ProductCardMatress = ({ item, selectedGrid, pageType, CallingFrom }) => {
       try {
         const response = await axios.get("https://ottomonukbackup1.vercel.app/mattresses");
         setLoading(false);
-
+        console.log(response.data.mattressesData,'response.data.mattressesData++')
+      
         const filters = {
           PocketSprung: 'Pocket Sprung',
           MemoryFoam: 'Memory Foam',
@@ -51,9 +52,27 @@ const ProductCardMatress = ({ item, selectedGrid, pageType, CallingFrom }) => {
         };
 
         const filteredData = response.data.mattressesData.filter(
-          (value) => value.Shopby === filters[CallingFrom]
+          (value) => value.type === filters[CallingFrom]
         );
-        setMattresses(filteredData);
+
+
+        const itemsPerPage = 10;
+        const startIdx = itemOffset;
+        const endIdx = itemOffset + itemsPerPage;
+        const paginatedData = filteredData.slice(startIdx, endIdx);
+        setMattresses(paginatedData);
+
+        if(CallingFrom==='Mattress'){
+          const itemsPerPage = 10;
+          const startIdx = itemOffset;
+          const endIdx = itemOffset + itemsPerPage;
+          const paginatedData = response.data.mattressesData.slice(startIdx, endIdx);
+        setMattresses(paginatedData);
+        return
+
+        }
+
+      
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -61,7 +80,7 @@ const ProductCardMatress = ({ item, selectedGrid, pageType, CallingFrom }) => {
     };
 
     fetchMattresses();
-  }, [CallingFrom]);
+  }, [CallingFrom,itemOffset]);
 
   const addHoverImage = () => {
     icon1Ref.current.style.display = 'inline-block';
@@ -85,8 +104,8 @@ const ProductCardMatress = ({ item, selectedGrid, pageType, CallingFrom }) => {
 
       </div>
     ) : (
-
-      mattresses?.map((item, index) =>
+      mattresses.length>0?
+     ( mattresses?.map((item, index) =>
         selectedGrid === 0 ? (
           <div
             key={item._id}
@@ -207,6 +226,10 @@ const ProductCardMatress = ({ item, selectedGrid, pageType, CallingFrom }) => {
           </div>
         </div>
         )
+      )):(
+        <div className="flex items-center justify-center h-[1 00px] text-red-500">
+      No Record Found
+    </div>
       )
     )
 

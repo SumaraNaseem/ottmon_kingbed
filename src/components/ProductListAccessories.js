@@ -30,7 +30,7 @@ const ProductListAccessories = ({ selectedGrid, setSelectedGrid, pageType,Callin
             <section id="Projects"
                 className={` ${selectedGrid === 2 ? "custom-grid" : "grid grid-cols-" + selectedGrid} ${selectedGrid !== 0 ? 'justify-items-center justify-center gap-6 ' : ''}mt-10 mb-5 `}>
                     {/* {currentProducts.map((product, i) => ( */}
-                        <ProductCardAccessories CallingFrom={CallingFrom} pageType={pageType}  selectedGrid={selectedGrid}    />
+                        <ProductCardAccessories itemOffset={itemOffset} CallingFrom={CallingFrom} pageType={pageType}  selectedGrid={selectedGrid}    />
                     {/* ))} */}
             </section>
             <hr className='text-primary' />
