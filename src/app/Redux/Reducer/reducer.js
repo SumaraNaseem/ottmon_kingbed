@@ -27,13 +27,44 @@ export const cartReducer = (state = initialState, action) => {
           cartLength: state.cartLength + 1,
         };
       }
-    case "REMOVE_CART":
+
+    case 'REMOVE_FROM_CART':
       const removedItem = state.cartItems.find((cartItem) => cartItem._id === action.payload);
-      return {
-        ...state,
-        cartItems: state.cartItems.filter((cartItem) => cartItem._id !== action.payload),
-        cartLength: state.cartLength - removedItem.quantity,
-      };
+      if (removedItem) {
+        return {
+          ...state,
+          cartItems: state.cartItems.filter((cartItem) => cartItem._id !== action.payload),
+          cartLength: state.cartLength - removedItem.quantity,
+        };
+      } else {
+        return state;
+      }
+
+
+    // case "REMOVE_CART":
+    //   // Find the item to be removed
+    //   const removedItem = state.cartItems.find(cartItem => cartItem._id === action.payload);
+    //   console.log('removedItem----', removedItem)
+    //   // Check if the item exists
+    //   if (removedItem) {
+    //     return {
+    //       ...state,
+    //       cartItems: state.cartItems.filter(cartItem => cartItem._id !== action.payload),
+    //       cartLength: state.cartLength - removedItem.quantity,
+    //     };
+    //   } else {
+    //     // If item is not found, return the current state
+    //     return state;
+    //   }
+
+    // case "REMOVE_CART":
+
+    //   const removedItem = state.cartItems.find((cartItem) => cartItem._id === action.payload);
+    //   return {
+    //     ...state,
+    //     cartItems: state.cartItems.filter((cartItem) => cartItem._id !== action.payload),
+    //     cartLength: state.cartLength - removedItem.quantity,
+    //   };
     case "CLEAR_CART":
       return {
         ...state,
