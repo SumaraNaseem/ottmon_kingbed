@@ -1,9 +1,10 @@
 'use client';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMemo } from 'react';
-import { clearCart } from '../Redux/Action/actions'; // Update with the actual path
+import { clearCart,removeFromCart } from '../Redux/Action/actions'; // Update with the actual path
 import { useRouter } from 'next/navigation';
-
+import { MdDelete } from "react-icons/md";
+ 
 const CartPage = () => {
   const router = useRouter();
   const { cartItems } = useSelector((state) => state.cartReducer);
@@ -16,7 +17,9 @@ const CartPage = () => {
   const handleCheckout = () => {
     router.push('/CheckOut'); // Adjust path if necessary
   };
-
+  const handleRemoveFromCart = (item) => {
+    dispatch(removeFromCart(item._id));
+};
   // Calculate total price
   const totalPrice = useMemo(() => {
     return cartItems?.reduce((acc, item) => acc + parseFloat(item?.price || 0), 0).toFixed(2);
@@ -47,11 +50,15 @@ const CartPage = () => {
             <h2 className="text-sm text-gray-800">{item?.description}</h2>
             <p className="text-sm text-gray-600"> {item?.name}</p>
             <p className="text-sm text-gray-500">${item?.price}</p>
-          </div>
+                                     <button className="w-8 h-8 text-center justify-center pt-2 flex bg-black rounded-full"  onClick={() => handleRemoveFromCart(item)}>
+                                        <MdDelete className="text-lg text-white" />
+                                    </button>
+           </div>
         </div>
       ))}
       <div className="flex flex-col md:flex-row justify-between items-center mt-5 text-start">
         <h2 className="text-xl font-semibold text-gray-800">Total Price: ${totalPrice}</h2>
+      
         <button 
           onClick={handleCheckout} 
           className="mt-3 md:mt-0 bg-[#00ACBB] text-white font-medium rounded-full py-3 px-6 text-sm hover:bg-[#0096a6]"

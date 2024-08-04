@@ -72,7 +72,10 @@ const ProductCardMatress = ({ item, selectedGrid,itemOffset, pageType, CallingFr
 
         }
 
-      
+        if(!CallingFrom){
+          setMattresses(response.data.mattressesData)
+            
+          }
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);

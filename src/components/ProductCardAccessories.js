@@ -60,7 +60,7 @@ const ProductCardAccessories = ({item, name,itemOffset, price, image, hoverImage
             const endIdx = itemOffset + itemsPerPage;
             const paginatedData = filteredData.slice(startIdx, endIdx);
             setMattresses(paginatedData);
-
+          
             if(CallingFrom==='Accessories'){
               const itemsPerPage = 10;
               const startIdx = itemOffset;
@@ -70,6 +70,7 @@ const ProductCardAccessories = ({item, name,itemOffset, price, image, hoverImage
             return
     
             }
+          
           } catch (error) {
             console.error("Error fetching data:", error);
             setLoading(false)
