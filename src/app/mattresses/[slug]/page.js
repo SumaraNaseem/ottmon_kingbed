@@ -642,7 +642,7 @@ const Products = ({ params }) => {
             </div>
             <div className="leading-2 mb-2  border border-dotted p-2">
             
-                    <p className="font-[500] text-[15px] ">Free Shipping to <span className="font-bold">Pakistan</span>  </p>
+                    <p className="font-[500] text-[15px] ">Free Shipping to <span className="font-bold">UK</span>  </p>
                     <p className="font-[500]"> Order within the next  <span className="font-bold"> {formatTime(currentTime)}</span>  for dispatch today, and you will receive your package between <span className="font-bold">Aug 02 and Aug 12</span> </p>
                     
                    
