@@ -72,10 +72,10 @@ const ProductCardMatress = ({ item, selectedGrid,itemOffset, pageType, CallingFr
 
         }
 
-        if(!CallingFrom){
-          setMattresses(response.data.mattressesData)
-            
-          }
+        if (!CallingFrom) {
+          const slicedData = response.data.mattressesData.slice(0, 3)
+          setMattresses(slicedData);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
