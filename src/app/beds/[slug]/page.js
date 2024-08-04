@@ -1001,8 +1001,7 @@ console.log(parts,'parts')
                 </div> 
               </div>
 
-              <Accessories />
-            </div>
+             </div>
           </div>
           Bed Size section 
           <div className="max-lg:mt-10  w-full max-lg:text-center">

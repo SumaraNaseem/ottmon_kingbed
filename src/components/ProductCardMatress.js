@@ -137,15 +137,13 @@ const ProductCardMatress = ({ item, selectedGrid,itemOffset, pageType, CallingFr
               />
             </div>
             <div className="flex items-center flex-wrap justify-between w-full ">
-              {  (
-                <div className="text-center pt-3">
+                 <div className="text-center pt-3">
                   <a onClick={() => {
                   router.push(`/mattresses/id=${item._id}`);}} className="bg-primary cursor-pointer p-3 px-2 xs:ms-[0px] ms-[6px] text-white rounded-md" style={{ cursor: 'pointer' }}>
                     <span>Customize your bed</span>
                   </a>
                 </div>
-              )}
-
+ 
               <div className="px-4 py-3">
                 <span className="text-gray-400 mr-3 text-xs  hover:text-primary duration-500">
                   {item.Shopby}
@@ -198,14 +196,12 @@ const ProductCardMatress = ({ item, selectedGrid,itemOffset, pageType, CallingFr
             />
           </div>
           <div className="text-center pt-3">
-            {!isMattresses && (
-              <a onClick={() => {
+               <a onClick={() => {
                 router.push(`/mattresses/id=${item._id}`);
               }} className="byb-badge cursor-pointer">
                 <span>Customize your bed</span>
               </a>
-            )}
-          </div>
+           </div>
           <div className="px-4 py-3">
             <span className="text-gray-400 mr-3 text-xs hover:text-primary duration-500">
               {item.Shopby}

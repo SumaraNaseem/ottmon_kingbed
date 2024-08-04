@@ -564,8 +564,7 @@ const Products = ({ params }) => {
                 </div>
               </div>
 
-              <Accessories />
-            </div>
+             </div>
           </div>
 
           <div className="max-lg:mt-10  w-full max-lg:text-center">
