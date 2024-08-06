@@ -15,7 +15,9 @@ export default function Login() {
     initialValues: {
       email: "",
       password: "",
+      
     },
+   
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
@@ -35,8 +37,6 @@ export default function Login() {
 
         fetch("http://localhost:9001/auth", requestOptions)
           .then((response) => response.text()
-        
-        
         )
           .then((result) => {
             const data = JSON.parse(result);

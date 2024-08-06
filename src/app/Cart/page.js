@@ -37,22 +37,24 @@ const CartPage = () => {
           Clear
         </button>
       </div>
-      <div className="hidden md:grid grid-cols-4 gap-4 p-2 border-b border-b-[#00ACBB]">
+      <div className="hidden md:grid grid-cols-5 gap-4 p-2 border-b border-b-[#00ACBB]">
         <h2 className="text-sm font-semibold text-gray-800">Image</h2>
         <h2 className="text-sm font-semibold sm:text-center  text-gray-800">Description</h2>
-        <p className="text-sm font-semibold text-gray-600"> Name</p>
-        <p className="text-sm font-semibold text-gray-500">Price</p>
+        <p className="text-sm font-semibold text-start text-gray-600"> Name</p>
+        <p className="text-sm font-semibold text-center text-gray-500">Price</p>
+        <p className="text-sm font-semibold text-center text-gray-500">Remove items</p>
       </div>
       {cartItems?.map((item) => (
         <div key={item?.id} className="p-2 border-b border-b-[#00ACBB]">
-          <div className="flex flex-col md:grid md:grid-cols-4 gap-4 py-5 items-center">
+          <div className="flex flex-col md:grid md:grid-cols-5 gap-4 py-5 items-center">
             <img src={item?.imageUrl} alt={item?.name} className="w-full md:w-24 h-24 object-cover rounded-lg" />
-            <h2 className="text-sm text-gray-800">{item?.description}</h2>
-            <p className="text-sm text-gray-600"> {item?.name}</p>
-            <p className="text-sm text-gray-500">${item?.price}</p>
-                                     <button className="w-8 h-8 text-center justify-center pt-2 flex bg-black rounded-full"  onClick={() => handleRemoveFromCart(item)}>
-                                        <MdDelete className="text-lg text-white" />
-                                    </button>
+            <h2 className="text-sm  text-gray-800">{item?.description}</h2>
+            <p className="text-sm text-start text-gray-600"> {item?.name}</p>
+            <p className="text-sm  text-center text-gray-500">${item?.price}</p>
+            <div className=' flex justify-center text-center'>
+            <button className="w-8 h-8 flex justify-center text-center justify-center pt-2 flex bg-black rounded-full"  onClick={() => handleRemoveFromCart(item)}>
+            <MdDelete className="text-lg text-white" /></button></div>
+                                    
            </div>
         </div>
       ))}
