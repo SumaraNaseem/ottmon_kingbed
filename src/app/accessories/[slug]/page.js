@@ -1003,7 +1003,7 @@ console.log('Fetched data:', response.data.accessories.price);
 
              </div>
           </div>
-          Bed Size section 
+          {/* Bed Size section  */}
           <div className="max-lg:mt-10  w-full max-lg:text-center">
             <div>
               <p className="text-[1.2rem]">{name}</p>
