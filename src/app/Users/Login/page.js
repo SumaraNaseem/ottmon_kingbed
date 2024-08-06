@@ -15,46 +15,51 @@ export default function Login() {
     initialValues: {
       email: "",
       password: "",
-      
     },
-   
-    validationSchema: validationSchema,
+    validationSchema,
     onSubmit: async (values) => {
-      try {
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-        var urlencoded = new URLSearchParams();
-      
-        urlencoded.append("email", values.email);
-        urlencoded.append("password", values.password);
+      console.log("Form values:", values);  // Log input values to the console
 
-        var requestOptions = {
+      try {
+        const myHeaders = new Headers({
+          "Content-Type": "application/x-www-form-urlencoded",
+        });
+
+        const urlencoded = new URLSearchParams({
+          email: values.email,
+          password: values.password,
+        });
+
+        const requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: urlencoded,
-          redirect: "follow",
         };
 
-        fetch("http://localhost:9001/auth", requestOptions)
-          .then((response) => response.text()
-        )
-          .then((result) => {
-            const data = JSON.parse(result);
-            const { token, email } = data || {};
-            if (token) {
-              if (email === "buttehtesham86@gmail.com") {
-                router.push("/admin");
-              } else if (token) {
-                router.push("/NewPaymentCardSetup");
-              }
-              localStorage.setItem("token", token);
-            } else {
-              alert("Invalid! Please try again");
-            }
-          })
-          .catch((error) => console.log("error", error));
-      } catch (err) {
-        console.log(err);
+        const response = await fetch("http://localhost:9001/auth", requestOptions);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.text();
+        const data = JSON.parse(result);
+        const { token, email } = data || {};
+
+        if (token) {
+          if (email === "buttehtesham86@gmail.com") {
+            router.push("/admin");
+          } else {
+            router.push("/NewPaymentCardSetup");
+          }
+          localStorage.setItem("token", token);
+        } else {
+          alert("Invalid credentials! Please try again.");
+        }
+        router.push("/NewPaymentCardSetup");
+      } catch (error) {
+        console.error("There was an error:", error);
+        alert("An error occurred. Please try again later.");
       }
     },
   });
@@ -76,9 +81,9 @@ export default function Login() {
               onBlur={formik.handleBlur}
               value={formik.values.email}
             />
-            {formik.touched.email && formik.errors.email ? (
+            {formik.touched.email && formik.errors.email && (
               <div className="text-red-500 text-sm">{formik.errors.email}</div>
-            ) : null}
+            )}
           </div>
           <div className="form-group">
             <input
@@ -92,24 +97,33 @@ export default function Login() {
               onBlur={formik.handleBlur}
               value={formik.values.password}
             />
-            {formik.touched.password && formik.errors.password ? (
+            {formik.touched.password && formik.errors.password && (
               <div className="text-red-500 text-sm">{formik.errors.password}</div>
-            ) : null}
+            )}
           </div>
-          <button className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300" type="submit">
+          <button
+            className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
+            type="submit"
+          >
             Login
           </button>
-          <div className="message">
-            {formik.touched.message && formik.errors.message ? (
-              <div className="text-red-500 text-sm">{formik.errors.message}</div>
-            ) : null}
-          </div>
         </form>
         <div className="text-center mt-4">
-          <p>Don&apos;t have an account? <span onClick={()=>{
-                  router.push(`/Users/SignUp`)
-                }} className="text-blue-500 cursor-pointer">Create an Account</span></p>
-          <p className="mt-2">Forgot password? <a href="/forgottenpassword" className="text-blue-500">Reset here</a></p>
+          <p>
+            Don&apos;t have an account?{" "}
+            <span
+              onClick={() => router.push(`/Users/SignUp`)}
+              className="text-blue-500 cursor-pointer"
+            >
+              Create an Account
+            </span>
+          </p>
+          <p className="mt-2">
+            Forgot password?{" "}
+            <a href="/forgottenpassword" className="text-blue-500">
+              Reset here
+            </a>
+          </p>
         </div>
       </div>
     </div>

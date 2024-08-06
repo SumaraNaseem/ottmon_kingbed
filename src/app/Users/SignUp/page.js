@@ -26,41 +26,47 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      // Console log the form values
+      console.log("Form values:", values);
+
       try {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer YOUR_TOKEN_HERE");
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-        const urlencoded = new URLSearchParams();
-        urlencoded.append("firstName", values.firstName);
-        urlencoded.append("lastName", values.lastName);
-        urlencoded.append("username", values.username);
-        urlencoded.append("email", values.email);
-        urlencoded.append("password", values.password);
+        const urlencoded = new URLSearchParams({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        });
 
         const requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: urlencoded,
-          redirect: "follow",
         };
 
-        fetch("https://ottomonukbackup1.vercel.app/register", requestOptions)
-          .then((response) => response.text())
-          .then((result) => {
-            const data = JSON.parse(result);
-            if (data.msg === "User already exists") {
-              alert(data.msg);
-            } else if (data.token) {
-              router.push("/Users/Login");
-              alert("Account created successfully");
-            } else {
-              alert("Invalid!");
-            }
-          })
-          .catch((error) => console.log("error", error));
+        const response = await fetch("http://localhost:9001/register", requestOptions);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.text();
+        const data = JSON.parse(result);
+        if (data.msg === "User already exists") {
+          alert(data.msg);
+        } else if (data.token) {
+          router.push("/Users/Login");
+          alert("Account created successfully");
+         
+        } else {
+          alert("An error occurred. Please try again.");
+        }
       } catch (err) {
-        console.log(err);
+        console.error("There was an error:", err);
+        alert("An error occurred. Please try again later.");
       }
     },
   });
@@ -70,86 +76,24 @@ export default function SignUp() {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
-          <div className="form-group">
-            <input
-              className={`form-control w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                formik.touched.username && formik.errors.username ? "border-red-500" : "border-gray-300"
-              }`}
-              type="text"
-              name="username"
-              placeholder="Username"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.username}
-            />
-            {formik.touched.username && formik.errors.username ? (
-              <div className="text-red-500 text-sm">{formik.errors.username}</div>
-            ) : null}
-          </div>
-          <div className="form-group">
-            <input
-              className={`form-control w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                formik.touched.firstName && formik.errors.firstName ? "border-red-500" : "border-gray-300"
-              }`}
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.firstName}
-            />
-            {formik.touched.firstName && formik.errors.firstName ? (
-              <div className="text-red-500 text-sm">{formik.errors.firstName}</div>
-            ) : null}
-          </div>
-          <div className="form-group">
-            <input
-              className={`form-control w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                formik.touched.lastName && formik.errors.lastName ? "border-red-500" : "border-gray-300"
-              }`}
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.lastName}
-            />
-            {formik.touched.lastName && formik.errors.lastName ? (
-              <div className="text-red-500 text-sm">{formik.errors.lastName}</div>
-            ) : null}
-          </div>
-          <div className="form-group">
-            <input
-              className={`form-control w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                formik.touched.email && formik.errors.email ? "border-red-500" : "border-gray-300"
-              }`}
-              type="email"
-              name="email"
-              placeholder="Email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <div className="text-red-500 text-sm">{formik.errors.email}</div>
-            ) : null}
-          </div>
-          <div className="form-group">
-            <input
-              className={`form-control w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                formik.touched.password && formik.errors.password ? "border-red-500" : "border-gray-300"
-              }`}
-              type="password"
-              name="password"
-              placeholder="Password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <div className="text-red-500 text-sm">{formik.errors.password}</div>
-            ) : null}
-          </div>
+          {['username', 'firstName', 'lastName', 'email', 'password'].map(field => (
+            <div key={field} className="form-group">
+              <input
+                className={`form-control w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  formik.touched[field] && formik.errors[field] ? "border-red-500" : "border-gray-300"
+                }`}
+                type={field === 'email' ? 'email' : field === 'password' ? 'password' : 'text'}
+                name={field}
+                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values[field]}
+              />
+              {formik.touched[field] && formik.errors[field] && (
+                <div className="text-red-500 text-sm">{formik.errors[field]}</div>
+              )}
+            </div>
+          ))}
           <div className="form-check flex items-center">
             <input
               className="form-check-input mr-2"
@@ -162,24 +106,16 @@ export default function SignUp() {
             <label className="form-check-label" htmlFor="terms">
               I accept the <span className="text-blue-500">Terms of Use</span> &amp; <span className="text-blue-500">Privacy Policy</span>
             </label>
-            {formik.touched.terms && formik.errors.terms ? (
+            {formik.touched.terms && formik.errors.terms && (
               <div className="text-red-500 text-sm">{formik.errors.terms}</div>
-            ) : null}
+            )}
           </div>
           <button type="submit" className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">
             Sign Up
           </button>
-          <div className="message text-red-500">
-            {formik.touched.message && formik.errors.message ? (
-              <div className="text-red-500 text-sm">{formik.errors.message}</div>
-            ) : null}
-          </div>
         </form>
         <div className="text-center mt-4">
-          <p>Already have an account? <span 
-            onClick={()=>{
-              router.push('/Users/Login')
-            }} className="text-blue-500 cursor-pointer">Login here</span></p>
+          <p>Already have an account? <span onClick={() => router.push('/Users/Login')} className="text-blue-500 cursor-pointer">Login here</span></p>
         </div>
       </div>
     </div>
